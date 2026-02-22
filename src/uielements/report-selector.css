@@ -1,5 +1,5 @@
 .overlay {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
@@ -17,11 +17,10 @@
     border-radius: 1em;
     padding: 1em;
     margin: 1em auto;
-    width: 50%;
-    min-width: 600px;
+    width: min(50rem, calc(100vw - 2rem));
 
     max-height: 95%;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 .right-top {
@@ -39,12 +38,18 @@
     border-radius: 4px;
 }
 
+.reports {
+    overflow-x: auto;
+}
+
 .report-table {
     width: 100%;
     border-collapse: collapse;
+    min-width: 34rem;
 }
 
-.report-table th, .report-table td {
+.report-table th,
+.report-table td {
     padding: 0.5em;
     text-align: left;
     border-bottom: 1px solid #eee;
@@ -98,3 +103,36 @@
     display: block;
 }
 
+@media (max-width: 640px) {
+    .overlay {
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+    }
+
+    .overlay-content {
+        width: calc(100vw - 1rem);
+        border-radius: 0.5rem;
+        padding: 0.75rem;
+        margin: 0.5rem auto;
+        max-height: calc(100dvh - 1rem);
+    }
+
+    .report-table {
+        min-width: 30rem;
+        font-size: 0.9rem;
+    }
+
+    .report-table th,
+    .report-table td {
+        padding: 0.4rem;
+    }
+
+    .right-top {
+        left: 0.5rem;
+        right: 0.5rem;
+        width: auto;
+        top: 2.5rem;
+        max-height: calc(100dvh - 3rem);
+        overflow-y: auto;
+    }
+}
