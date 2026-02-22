@@ -31,6 +31,30 @@ yarn preview          # Preview production build
 yarn deploy           # Deploy (runs scripts/deploy.sh)
 ```
 
+
+### Troubleshooting local data loading (`ECONNREFUSED /match-report.json`)
+
+If you can open the app but the report table is empty and the console shows proxy/data errors, the UI is running but the data server is not.
+
+Run these in **two terminals**:
+
+```bash
+# terminal 1
+yarn serve-data
+
+# terminal 2
+yarn dev
+```
+
+Notes:
+- The app expects the data API at `http://localhost:8801` via Vite proxy (`/data` -> `:8801`).
+- If `5173` is busy, Vite may start on another port (e.g. `5174`) — that's normal.
+- Prefer `yarn install` (project uses Yarn 4); mixing `npm install` may change lockfiles and local behavior.
+
+### About planning-only PRs
+
+Some PRs in this repo are documentation/planning PRs and intentionally do **not** change runtime UI behavior. If a PR adds files only under `docs/plans/`, the app will look the same until implementation PRs are merged.
+
 ## My city or country is not on the list
 
 We are looking for new sources of data and going to add them,

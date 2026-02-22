@@ -10,6 +10,7 @@ import { MatchReportSelector } from './uielements/report-selector';
 import { SelectionInfo } from './uielements/selection-info';
 import { SchedulePreview } from './uielements/schedule-preview';
 import { AppHeader } from './uielements/app-header';
+import { MapSearch } from './uielements/map-search';
 
 export type MapContextT = {
   map: Map,
@@ -98,6 +99,7 @@ export function App() {
       <MapContext value={mapContextVal} >
         <SelectionContext value={selectionContext} >
 
+          <MapSearch />
           <MatchReportSelector onSelectReport={selectionContext.onReportSelect} />
           {preview ?
             <SchedulePreview selection={selection} /> :
