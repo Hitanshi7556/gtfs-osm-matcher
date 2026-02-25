@@ -1,3 +1,4 @@
+import { MapSearch } from "./uielements/map-search";
 import { createContext } from 'preact';
 
 import type { Map, MapGeoJSONFeature } from 'maplibre-gl';
@@ -98,6 +99,7 @@ export function App() {
       <MapContext value={mapContextVal} >
         <SelectionContext value={selectionContext} >
 
+          <MapSearch />
           <MatchReportSelector onSelectReport={selectionContext.onReportSelect} />
           {preview ?
             <SchedulePreview selection={selection} /> :
