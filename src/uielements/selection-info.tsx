@@ -16,6 +16,7 @@ import { HtmlMapMarker } from "./editor/map-marker";
 import { AddOsmStopController } from "./editor/add-stop-controller";
 import { MoveController } from "./editor/move-stop-controller";
 import { OSM_QUERY_QUEUE } from "../services/OsmQuerryQueue";
+import { NearbyNotes } from "./editor/osm-notes";
 import type { LonLatTuple } from "../services/OSMData.types";
 
 
@@ -166,6 +167,7 @@ function MatchInfo({ datasetName, properties, geometry, idTags }: MatchInfoProps
         {loading && <div>Loading OSM data...</div>}
 
         <OsmElements setLoading={setLoading} osmFeatures={osmFeatures} tagActions={tagActions} parentLonLat={[lon, lat]} />
+        <NearbyNotes lon={lon} lat={lat} />
 
     </div>)
 }

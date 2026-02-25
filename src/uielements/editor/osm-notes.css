@@ -1,0 +1,16 @@
+.osm-notes { margin-top: 12px; }
+
+.osm-notes h4 { margin-bottom: 6px; }
+
+.note-item {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 8px;
+  margin-bottom: 6px;
+}
+
+.note-status-open { color: green; font-weight: bold; }
+.note-status-closed { color: gray; }
+
+.note-comment { margin-top: 4px; font-size: 0.9em; }
+.note-link { font-size: 0.85em; }
