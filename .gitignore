@@ -25,3 +25,6 @@ dist-ssr
 *.sw?
 
 scripts
+mock-data/
+package-lock.json
+public/match-report.json
