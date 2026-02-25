@@ -24,3 +24,28 @@
 span.osm-tag-delete:hover {
     color: red;
 }
+.osm-tag-key {
+    position: relative;
+}
+
+.tag-suggestions {
+    position: absolute;
+    z-index: 100;
+    top: 100%;
+    left: 0;
+    background: white;
+    border: 1px solid #bbb;
+    border-radius: 0.25rem;
+    min-width: 150px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+.tag-suggestion-row {
+    padding: 0.3rem 0.5rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.tag-suggestion-row:hover {
+    background: #f0f4ff;
+}

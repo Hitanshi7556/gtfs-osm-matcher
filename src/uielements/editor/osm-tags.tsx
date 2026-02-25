@@ -5,6 +5,8 @@ import { useCallback, useRef, useState } from 'preact/hooks';
 import type { ComponentChildren } from 'preact';
 
 import "./osm-tags.css";
+import { suggestKeys } from "./tag-suggestions";
+
 
 type TagEntry = {
     id: string;
@@ -50,6 +52,7 @@ export function TagEditor({ tags, tagsOriginal, onChange, children, protectedKey
         return initialEntries;
     });
 
+    const [activeSuggestionId, setActiveSuggestionId] = useState<string | null>(null);
     const nextIdRef = useRef(entries.length + Object.keys(tagsOriginal || {}).length + 1);
 
     const updateEntries = useCallback((newEntries: TagEntry[]) => {
@@ -164,9 +167,24 @@ export function TagEditor({ tags, tagsOriginal, onChange, children, protectedKey
                         value={tmp ? '' : k}
                         placeholder={tmp ? 'key' : ''}
                         readOnly={readonly}
+                        onFocus={() => setActiveSuggestionId(id)}
+                        onBlur={() => setTimeout(() => setActiveSuggestionId(null), 150)}
                         onInput={(e) => handleKeyEdit(id, e)} />
+                    {activeSuggestionId === id && suggestKeys(k).length > 0 &&
+                        <div className='tag-suggestions'>
+                            {suggestKeys(k).map(suggestion =>
+                                <div
+                                    key={suggestion}
+                                    className='tag-suggestion-row'
+                                    onMouseDown={() => {
+                                        updateEntries(entries.map(e => e.id === id ? { ...e, k: suggestion, tmp: false } : e));
+                                        setActiveSuggestionId(null);
+                                    }}>
+                                    {suggestion}
+                                </div>
+                            )}
+                        </div>}
                 </td>
-
                 <td className={cls('osm-tag-value', important && 'important', isInvalid && 'invalid', readonly && 'protected')}>
                     <input
                         value={tmp ? '' : v}
