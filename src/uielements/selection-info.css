@@ -76,3 +76,14 @@ span.loading-indicator {
     100% { transform: rotate(360deg); }
 }
 
+
+@media (max-width: 600px) {
+  #selection-info {
+    max-width: 85%;
+    max-height: 50%;
+    top: auto;
+    bottom: 10px;
+    left: 5px;
+    right: 5px;
+  }
+}
