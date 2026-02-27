@@ -259,6 +259,10 @@ export function addRegionBboxLayer(
         },
     });
 
+    // Track the currently-selected region so we can skip redundant
+    // clicks (which would otherwise clear the stop selection).
+    let currentRegion: string | null = null;
+
     // ── hover popup ──
     const popup = new maplibregl.Popup({
         closeButton: false,
@@ -312,6 +316,9 @@ export function addRegionBboxLayer(
         const features = map.queryRenderedFeatures(e.point, { layers: [FILL_LAYER_ID, HIGHLIGHT_FILL_ID] });
         if (features.length > 0) {
             const region = features[0].properties.region;
+            // If this region is already selected, don't re-fire (this
+            // prevents the bbox click from clearing a stop selection).
+            if (region === currentRegion) return;
             onSelectRegion(region);
         }
     }
@@ -326,6 +333,7 @@ export function addRegionBboxLayer(
     // ── public handle ──
     return {
         setSelectedRegion(region: string | null) {
+            currentRegion = region;
             if (region) {
                 // Show the selected region's highlight ON TOP of the base layers
                 map.setFilter(HIGHLIGHT_FILL_ID, ["==", ["get", "region"], region]);

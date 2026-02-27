@@ -24,9 +24,10 @@ const importantTagsRg = /(name|ref|gtfs|bus|train|tram|trolleybus|ferry|station|
 const ABC = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 export type SelectionInfoProps = {
-    selection: SelectionT | null
+    selection: SelectionT | null;
+    onClose?: () => void;
 }
-export function SelectionInfo({ selection }: SelectionInfoProps) {
+export function SelectionInfo({ selection, onClose }: SelectionInfoProps) {
     const properties = selection?.feature.properties;
     const datasetName = selection?.datasetName;
     const reportRegion = selection?.reportRegion;
@@ -36,6 +37,7 @@ export function SelectionInfo({ selection }: SelectionInfoProps) {
 
     return (<>
         <div id={"selection-info"} className={cls(!selection && "hidden")}>
+            {selection && <button className="selection-close-btn" onClick={onClose} aria-label="Close">✕</button>}
             {properties && reportRegion &&
                 <MatchInfo {...{ datasetName, properties, geometry, reportRegion, idTags }} />}
         </div>

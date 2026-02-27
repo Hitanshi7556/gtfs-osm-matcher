@@ -103,7 +103,12 @@ export function App() {
           <MatchReportSelector onSelectReport={selectionContext.onReportSelect} />
           {preview ?
             <SchedulePreview selection={selection} /> :
-            <SelectionInfo selection={selection} />
+            <SelectionInfo selection={selection} onClose={() => {
+              updateSelection(null);
+              updateSelectionSource('report-reset');
+              // Strip /selection/... from hash so the feature isn't re-selected
+              window.location.hash = window.location.hash.replace(/\/selection\/[^#]*/, '');
+            }} />
           }
 
         </SelectionContext>

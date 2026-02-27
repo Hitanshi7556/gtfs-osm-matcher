@@ -44,3 +44,21 @@
     padding: 0.5rem;
     color: #666;
 }
+
+.search-section-header {
+    padding: 0.3rem 0.5rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #555;
+    background: #f0f0f0;
+    border-bottom: 1px solid #ddd;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.search-stop-code {
+    font-weight: 400;
+    color: #888;
+    font-size: 0.85em;
+}
