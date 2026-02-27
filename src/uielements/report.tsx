@@ -271,7 +271,7 @@ export function MatchReport({ reportRegion, reportData }: MatchReportProps) {
     });
 
     return (<div>
-        <h2>{reportRegion}</h2>
+        <h2 style={{ color: '#d32f2f', fontWeight: 'bold' }}>{reportRegion}</h2>
         {datasetControls}
         {datasetElements}
         <div className={"match-report-meta"}>

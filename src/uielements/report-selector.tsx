@@ -1,7 +1,9 @@
-import { useEffect, useState } from "preact/hooks";
+import { useContext, useEffect, useState } from "preact/hooks";
 import { parseUrlReportRegion, useHashRoute } from "./routing";
 import { MatchReport, type Report } from "./report";
-import { ReportTable } from "./report-table";
+import { RegionTree } from "./region-tree";
+import { addRegionBboxLayer, type BboxLayerHandle } from "./region-bbox-layer";
+import { MapContext } from "../app";
 import { cls } from "./cls";
 import { DATA_BASE_URL } from "../config";
 import "./report-selector.css";
@@ -21,27 +23,31 @@ export function MatchReportSelector({ onSelectReport }: MatchReportSelectorProps
             .then(data => { setMatchReports(data.matchedRegions); });
     }, [setMatchReports]);
 
-    const reports = matchReports.map((report) => {
-        const region = report.region;
-        const liveUpdates = report.liveUpdates;
-        
-        const gtfsDate = report.matchMeta?.gtfsTimeStamp ? 
-                new Date(report.matchMeta.gtfsTimeStamp) : 
-                null;
+    // --- Region bbox layer on the map ---
+    const mapCtx = useContext(MapContext);
+    const [bboxHandle, setBboxHandle] = useState<BboxLayerHandle | null>(null);
 
-        const matchStats = report?.matchStats;
-        const matched = matchStats && (matchStats.matchId + matchStats.nameMatch + matchStats.manyToOne + matchStats.transitHubs);
-        const matchPercent = matched && matched / matchStats.total * 100;
+    // Add bbox layer once when reports are loaded (keep it for the whole session)
+    useEffect(() => {
+        if (!mapCtx || matchReports.length === 0) return;
 
-        return {
-            region,
-            gtfsDate,
-            matched,
-            matchPercent,
-            matchStats,
-            liveUpdates
-        }
-    });
+        let handle: BboxLayerHandle | undefined;
+
+        mapCtx.loaded.then(map => {
+            handle = addRegionBboxLayer(map, matchReports, (region) => {
+                onSelectReport?.(region);
+                window.location.hash = `#/match-report/${region}`;
+            });
+            setBboxHandle(handle);
+        });
+
+        return () => { handle?.remove(); setBboxHandle(null); };
+    }, [mapCtx, matchReports, onSelectReport]);
+
+    // Highlight the selected region's bbox (or clear highlight)
+    useEffect(() => {
+        bboxHandle?.setSelectedRegion(reportRegion ?? null);
+    }, [bboxHandle, reportRegion]);
 
     const reportData = reportRegion && matchReports.find(r => r.region === reportRegion);
 
@@ -68,12 +74,31 @@ export function MatchReportSelector({ onSelectReport }: MatchReportSelectorProps
         )
     }
 
+    const [minimized, setMinimized] = useState(false);
+
+    if (minimized) {
+        return (
+            <div className="overlay-minimized">
+                <button className="overlay-toggle-btn" onClick={() => setMinimized(false)}
+                    title="Show region list">
+                    📋 Show Regions
+                </button>
+            </div>
+        );
+    }
+
     return (
         <div className={"overlay"}>
             <div className={'overlay-content'}>
-                <h2>Available match reports</h2>
+                <div className="overlay-header">
+                    <h2>Available match reports</h2>
+                    <button className="overlay-close-btn" onClick={() => setMinimized(true)}
+                        title="Minimize to see the map">
+                        ✕
+                    </button>
+                </div>
                 <div className={'reports'}>
-                    <ReportTable reports={reports} onSelectReport={onSelectReport} />
+                    <RegionTree reports={matchReports} onSelectReport={onSelectReport} />
                 </div>
                 <div className={"report-list-footer"}>
                     To add your city or country, or for any other inquiries, please write us at

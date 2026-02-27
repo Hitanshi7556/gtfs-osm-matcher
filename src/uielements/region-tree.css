@@ -1,0 +1,44 @@
+.region-tree-continent {
+    margin-bottom: 4px;
+}
+
+.region-tree-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    padding: 4px 0;
+    user-select: none;
+}
+
+.region-tree-header:hover {
+    background: rgba(0, 0, 0, 0.04);
+}
+
+.region-tree-arrow {
+    display: inline-block;
+    font-size: 0.7em;
+    transition: transform 0.15s ease;
+}
+
+.region-tree-arrow.open {
+    transform: rotate(90deg);
+}
+
+.region-tree-country {
+    margin-left: 16px;
+}
+
+.region-tree-feeds {
+    margin-left: 16px;
+}
+
+.region-tree-feeds .report-table {
+    width: 100%;
+}
+
+.region-tree-count {
+    font-size: 0.85em;
+    color: #888;
+    margin-left: 4px;
+}
